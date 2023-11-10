@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Vue Test</title>
+</head>
+<body>
+    <div id="app">
+        <login-form>
+            <hr /> 
+
+        </login-form>
+        <!--input v-model="testStr"-->
+        <!--div v-html="testStr"> </div-->
+
+
+    </div>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+        let app = Vue.createApp({
+            data: function(){
+                return{
+                    testStr: '<img src="#" onerror=alert(1) //>'
+                }
+            }
+
+        })
+        app.component('login-form',{
+            template: `
+                <form @submit.prevent="handleSubmit">
+                    <h3> {{ title }} </h3>
+                    <custom-input v-model="email" :label="emailLabel"/>
+                    <custom-input v-model="password" :label="passwordLabel"/>
+                    <button>Submit</button >
+                </form>
+            `,
+            data(){
+                return{
+                    title: 'Form',
+                    email: 'test',
+                    password: '',
+                    emailLabel: '<script>alert(1)<//script>',
+                    passwordLabel: 'Key'
+
+                }
+            },
+            methods: {
+                handleSubmit(){
+                    console.log(this.email)
+                }
+            },
+            components: ['custom-input']
+
+        })
+        app.component('custom-input',{
+            template: `
+                <label>
+                    {{ label }}
+                    <input type='text' v-model="inputValue"/>
+                </label>
+            `,
+            props: ['label','modelValue'],
+            computed: {
+                inputValue: {
+                    get() {
+                        return this.modelValue
+                    },
+                    set() {
+
+                    }
+                }
+
+            }
+            //data() {
+              //  return {
+                //    inputValue: ''
+                //}
+            //}
+
+        })
+        
+        app.mount('#app')
+
+        
+    </script>
+
+
+    
+</body>
+</html>
